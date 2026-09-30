@@ -595,7 +595,7 @@ main.about .section-title i{
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x proximity;   /* was mandatory: it forced item-aligned rests that fought the prev/next buttons and left a dead gap ("extra space") at the ends */
-    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;   /* iOS: stop rubber-band overscroll from resting past the last badge and leaving a trailing gap (replaces legacy -webkit-overflow-scrolling: touch, which triggered that artifact) */
     scrollbar-width: none;            /* Firefox */
   }
   .about-truststrip__inner::-webkit-scrollbar{ display: none; } /* Chrome/Safari */
@@ -1536,7 +1536,7 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
     flex-wrap: nowrap;
     justify-content: flex-start;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;   /* iOS: stop rubber-band overscroll from resting past the last badge and leaving a trailing gap (replaces legacy -webkit-overflow-scrolling: touch, which triggered that artifact) */
     scrollbar-width: none;
     gap: 16px;
   }
@@ -2112,7 +2112,7 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x proximity;   /* was mandatory: it forced item-aligned rests that fought the prev/next buttons and left a dead gap ("extra space") at the ends */
-    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;   /* iOS: stop rubber-band overscroll from resting past the last badge and leaving a trailing gap (replaces legacy -webkit-overflow-scrolling: touch, which triggered that artifact) */
     scrollbar-width: none;            /* Firefox */
     /* Shadow room stays inside the rail (clipped by overflow-y: hidden),
        but the negative margin cancels its layout height so the section's
