@@ -651,7 +651,10 @@ main.about .section-title i{
    7-badge trust-bar grid only fits from ~1280px up; below that it's a
    swipeable rail that needs its arrows (e.g. iPad Pro at 1024). */
 @media (min-width: 1280px){
-  .strip-arrow{ display: none; }
+  /* The stats strip still fits as a row on desktop — keep its arrows hidden.
+     The trust-badge strip is now a scroller at every width, so its arrows are
+     left to the JS (shown only when the badges actually overflow). */
+  .about-truststrip .strip-arrow{ display: none; }
 }
 
 /* Trustbar viewport sits INSIDE the container's padding by default, which
@@ -1927,22 +1930,22 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: clamp(8px, 1vw, 16px);
+  /* Single-row scroller at EVERY width so each badge keeps its one-line title;
+     the row centres when all badges fit and scrolls (prev/next arrows) when they
+     don't. (Was a fixed 8-col grid, which forced the longer titles to wrap.) */
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: safe center;
+  gap: clamp(14px, 1.8vw, 32px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+  padding-bottom: var(--sp-2);                 /* room for the flip-card shadow */
   position: relative;
 }
-.trustbar__rail::before{
-  /* The connecting timeline line — sits behind the icon nodes */
-  content: "";
-  position: absolute;
-  top: 56px;                                  /* aligned to vertical center of 112px icon */
-  left: 6%;
-  right: 6%;
-  height: 1px;
-  background: var(--graphite-300);
-  z-index: 0;
-}
+.trustbar__rail::-webkit-scrollbar{ display: none; }
 
 /* Each item */
 .trustbar__item{
@@ -1951,7 +1954,9 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
   flex-direction: column;
   align-items: center;
   text-align: center;
-  min-width: 0;   /* let the 8-column desktop grid shrink tracks to fit (overridden by the mobile/tablet flex-basis + min-width below) */
+  flex: 0 0 170px;              /* uniform badge width, wide enough for the longest one-line title/sub (~149px) */
+  min-width: 0;                 /* ignore content min-content so every badge is exactly 170px (uniform row) */
+  scroll-snap-align: start;
   padding: 0 clamp(4px, 0.6vw, 10px);
   cursor: default;
   outline: none;
@@ -2072,9 +2077,10 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
   width: 64px; height: 64px;
 }
 .trustbar__item:nth-child(4) .trustbar__face--front img{ width: 86px; height: 86px; } /* Red Dot */
-.trustbar__item:nth-child(5) .trustbar__face--front img{ width: 94px; height: 94px; } /* Trusted Shops */
-.trustbar__item:nth-child(6) .trustbar__face--front img{ width: 94px; height: 94px; } /* Garantie */
-.trustbar__item:nth-child(7) .trustbar__face--front img{ width: 70px; height: 70px; } /* Customers — scaled down to match the visual mass of neighbouring badges */
+.trustbar__item:nth-child(5) .trustbar__face--front img{ width: 72px; height: 72px; } /* German Design Award — tall portrait medal, scaled down to match neighbours' visual mass */
+.trustbar__item:nth-child(6) .trustbar__face--front img{ width: 94px; height: 94px; } /* Trusted Shops */
+.trustbar__item:nth-child(7) .trustbar__face--front img{ width: 94px; height: 94px; } /* Garantie */
+.trustbar__item:nth-child(8) .trustbar__face--front img{ width: 70px; height: 70px; } /* Customers — scaled down to match the visual mass of neighbouring badges */
 
 /* Timeline dots removed */
 .trustbar__node{ display: none; }
@@ -2087,6 +2093,7 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
   letter-spacing: -0.005em;
   color: var(--schwarz);
   line-height: 1.3;
+  white-space: nowrap;   /* titles always on one line (strip scrolls if they don't all fit) */
 }
 .trustbar__sub{
   margin: 0;
@@ -2128,10 +2135,9 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
   .trustbar__rail::-webkit-scrollbar{ display: none; } /* Chrome/Safari */
   .trustbar__rail::before{ display: none; }
   .trustbar__item{
-    /* Cap the slot width so badges stay close together on wider rails
-       (iPad Pro): a flat 30% basis made each slot ~278px while the badge
-       is only ~112px, leaving huge gaps. */
-    flex: 0 0 clamp(150px, 30%, 160px);
+    /* Match the base badge width so the longest one-line title (~149px) never
+       clips here either; subs are allowed to wrap on tablet/mobile (below). */
+    flex: 0 0 170px;
     scroll-snap-align: start;         /* start-snap so the last badge doesn't need trailing space to center */
     margin-bottom: 0;
   }
@@ -2217,10 +2223,8 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
 @media (max-width: 767px){
   .trustbar__rail{ gap: var(--sp-2); }
   .trustbar__item{
-    /* Narrower cards + minimal side padding pull the centered badges close
-       together (most of the old gap was empty card width, not the flex gap). */
-    flex: 0 0 44%;
-    min-width: 150px;
+    /* Keep the base 170px badge width (fits the longest one-line title on phones
+       too); just tighten the side padding so cards sit closer together. */
     padding-inline: 2px;
   }
   /* Tap to flip — :active triggers the same flip as :hover on desktop.
