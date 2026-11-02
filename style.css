@@ -657,6 +657,24 @@ main.about .section-title i{
   .about-truststrip .strip-arrow{ display: none; }
 }
 
+/* Restore the hairline "timeline" connector behind the badge icons (it was
+   dropped when the grid became a scroller). It lives on the non-scrolling
+   viewport so it stays a steady track at icon height while the badges slide
+   over it — their white icon cards cover it, so it only shows in the gaps. */
+.trustbar__viewport::before{
+  content: "";
+  position: absolute;
+  top: 56px;                 /* vertical centre of the 112px badge icon */
+  left: 6%;
+  right: 6%;
+  height: 1px;
+  background: var(--graphite-300);
+  z-index: 0;
+  pointer-events: none;
+}
+/* Sit the prev/next arrows on the icon row, not the full card height. */
+.trustbar__viewport .strip-arrow{ top: 56px; }
+
 /* Trustbar viewport sits INSIDE the container's padding by default, which
    pushes its arrows on top of the first/last badge image. Break the viewport
    out of the padding on the strip's responsive range so the arrows can sit
