@@ -1928,7 +1928,7 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: clamp(8px, 1vw, 16px);
   position: relative;
 }
@@ -1951,6 +1951,7 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
   flex-direction: column;
   align-items: center;
   text-align: center;
+  min-width: 0;   /* let the 8-column desktop grid shrink tracks to fit (overridden by the mobile/tablet flex-basis + min-width below) */
   padding: 0 clamp(4px, 0.6vw, 10px);
   cursor: default;
   outline: none;
