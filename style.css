@@ -696,6 +696,13 @@ main.about .section-title i{
   .about-truststrip .strip-arrow--prev{ left: clamp(var(--sp-6), 4vw, 56px); }
   .about-truststrip .strip-arrow--next{ right: clamp(var(--sp-6), 4vw, 56px); }
 }
+/* Desktop (grid breakpoint up): keep side gutters on the badge viewport so the
+   prev/next arrows sit in the gutter beside the cards, not over the last badge
+   (the ≤1279 full-bleed handles smaller screens). The arrows use their 8px
+   default inset, which now lands inside this gutter. */
+@media (min-width: 1280px){
+  .trustbar__viewport{ padding-inline: clamp(48px, 4vw, 56px); }
+}
 
 /* ============== SECTION 2 — STORY ============== */
 .about-story__grid{
