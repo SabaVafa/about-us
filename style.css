@@ -1850,7 +1850,10 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
   margin-top: 8px;
   position: relative;
   height: 2px;
-  width: 100%;
+  /* Uniform width across all tabs: the track doubles as a per-chapter
+     progress bar (the teal fill animates across it), so equal-width bars
+     read as a tidy rail — the active chapter is shown by colour, not length. */
+  width: 32px;
   background: color-mix(in srgb, var(--msty-fg) 12%, transparent);
   border-radius: var(--r-s);
   overflow: hidden;
@@ -1892,7 +1895,6 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
   .msty__tabs{ gap: 24px; align-items: center; }
   .msty__tab{ min-width: 0; padding-bottom: 0; }
   .msty__tab-track{
-    max-width: 48px;
     position: absolute;
     left: 0;
     top: calc(100% + 6px);
@@ -1915,10 +1917,9 @@ main.about .craft-eyebrow{ margin-bottom: var(--sp-5); }
   .msty__tabs{ gap: 22px; align-items: flex-end; width: 100%; }
   .msty__tab{ min-width: 0; padding-bottom: 8px; }
   .msty__tab-name{ display: block; font-size: 11px; letter-spacing: 0.04em; }
-  /* Full-label-width track (override the tablet 48px cap), back in normal
-     grid flow so the underline sits cleanly below the label like desktop. */
+  /* Underline back in normal grid flow so the uniform track sits cleanly
+     below the label like desktop. */
   .msty__tab-track{
-    max-width: none;
     position: relative;
     top: auto;
     margin-top: 8px;
